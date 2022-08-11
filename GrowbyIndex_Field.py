@@ -24,8 +24,10 @@ from c4d.modules import mograph as mo
 def SampleValue(op, transform, pos, index, lastIndex, uvw, direction):
 
     duration = 1 #Animation Duration Q: if clone objects has different duration?
-    lastIndex = 12 # Bug
-    value = (time/duration) - ( float(index) / lastIndex )
+    gap = 1 # Finish all index ( Unit : Second )
+    
+    # lastIndex = 12 # Bug
+    value = ( time / duration ) - ( float(index) / lastIndex ) * gap 
 
     return value
 
