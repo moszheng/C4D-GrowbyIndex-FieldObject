@@ -1,22 +1,16 @@
 """
-Grow by Index 
+Grow by Index - Python Field
 Author : Sheng Wen Cheng
 """
 import c4d
 import math
 from c4d.modules import mograph as mo
 
-#
-#These are simpler functions to allow quickly and easily make custom fields
-#To use them, change the contents of the Value, Color, Alpha and Direction preset functions
-#For more customization, the core functions can be found at the bottom
-
 #Variables:
     #pos = sample's position, index = sample's index, lastIndex = sample's the last index of, transform = a matrix to bring the samples to global space
     #uvw = sample's uvw coordinates, direction = sample's the directions
     #op = the field object
     #time = current time, #timeratio = current time progression in the document
-
 
 #-------------------------------------------------------------------------------------------------------------
 
@@ -31,6 +25,7 @@ def SampleValue(op, transform, pos, index, lastIndex, uvw, direction):
 
     return value
 
+"""
 # COLOR (vector)
 def SampleColor(op, transform, pos, index, lastIndex, uvw, direction):
     # Calculate the Color channel of the Python Field below
@@ -54,7 +49,7 @@ def SampleDir(op, transform, pos, index, lastIndex, uvw, direction):
     direction = (globalpos - op.GetMg().off).GetNormalized()
     #End of your code
     return direction
-
+"""
 #-------------------------------------------------------------------------------------------------------------
 
 # Below is the engine that uses the above script.
@@ -86,8 +81,6 @@ def InitSampling(op, info):
     currentTimeRatio = (time - doc.GetMinTime().Get()) / (doc.GetMaxTime().Get() - doc.GetMinTime().Get())
     # Multiplying by 2 to play the time twice in the project range.
     currentTimeRatio = currentTimeRatio * 2.0
-
-
 
     # Success, return False to prevent sampling.
     # FreeSampling will be called even if sampling was cancelled.
@@ -124,7 +117,6 @@ def Sample(op, inputs, outputs, info):
         #c4d.modules.mograph.FieldOutput -- the sampling output arrays (pre-allocated).
         #c4d.modules.mograph.FieldInfo -- the sampling informations.
 
-
     # You can extract an output list and write to it directly.
     # Don't forget to write back the list at the end.
     valueList = outputs._value
@@ -132,10 +124,11 @@ def Sample(op, inputs, outputs, info):
     # access a single value.
 
     # Checking Active Channels
+    """
     availableColor = True if outputs._color and outputs._alpha else False
     availableAlpha = True if outputs._alpha else False
     availableDirection = True if outputs._direction else False
-
+    """
     # Checking Available Inputs of Sample
     inputPosition = True if inputs._position else False
     inputUvw = True if inputs._uvw else False
@@ -159,6 +152,7 @@ def Sample(op, inputs, outputs, info):
     # Depending on the color parameters of the Effector and FieldLayer,
     # color arrays could be empty. You can check the FieldInfo flags also
     # to validate this.
+    """
     colorList = outputs._color
     alphaList = outputs._alpha
     if availableColor:
@@ -193,7 +187,7 @@ def Sample(op, inputs, outputs, info):
         # Write the colors in the FieldOutput
         outputs._color = colorList
         outputs._alpha = alphaList
-
+    
     dirList = outputs._direction
     if availableDirection and ('SampleDir' in globals()):
         for i in range(0, inputs._blockCount):
@@ -207,7 +201,7 @@ def Sample(op, inputs, outputs, info):
             )
 
         outputs._direction = dirList
-
+    """
     # No shape clipping here.
     outputs.ClearDeactivated(False)
 
