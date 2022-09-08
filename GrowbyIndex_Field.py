@@ -19,9 +19,12 @@ def SampleValue(op, transform, pos, index, lastIndex, uvw, direction):
 
     speed = 1 # Grow Speed (Unit : 1 / Second)
     gap = 1 # The time to iteration all index ( Unit : Second )
+    fps = 24 
+    frame_start = 100 / fps
     
     # lastIndex = 12 # Bug
-    value = ( time * speed ) - ( float(index) / lastIndex ) * gap 
+    # value = time - gap
+    value = ( (time - frame_start) * speed ) - ( float(index) / lastIndex ) * gap 
 
     return value
 
