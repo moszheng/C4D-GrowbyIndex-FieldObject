@@ -15,15 +15,14 @@ from c4d.modules import mograph as mo
 #-------------------------------------------------------------------------------------------------------------
 
 # VALUE (float)
-def SampleValue(op, transform, pos, index, lastIndex, uvw, direction):
+def SampleValue(op, transform, index, lastIndex):
 
     speed = 1 # Grow Speed (Unit : 1 / Second)
     gap = 1 # The time to iteration all index ( Unit : Second )
     fps = 24 
     frame_start = 100 / fps
     
-    # lastIndex = 12 # Bug
-    # value = time - gap
+    # value = time - gap 
     value = ( (time - frame_start) * speed ) - ( float(index) / lastIndex ) * gap 
 
     return value
@@ -61,25 +60,18 @@ def FreeSampling(op, info):
 def Sample(op, inputs, outputs, info):
     
     valueList = outputs._value
-    # Or use outputs.GetValue(index) outputs.SetValue(index) to
-    # access a single value.
 
-    # Checking Available Inputs of Sample
-    inputPosition = True if inputs._position else False
-    inputUvw = True if inputs._uvw else False
-    inputDirection = True if inputs._direction else False
+    if inputs._fullArraySize != 1 : #debug
 
-    # First pass on even points to calculate values
-    if 'SampleValue' in globals():
-        for i in range(0, inputs._blockCount):
-            valueList[i] = SampleValue(op,
-            inputs._transform,
-            inputs._position[i] if inputPosition else NULLVECTOR,
-            i + inputs._blockOffset,
-            inputs._fullArraySize - 1,
-            inputs._uvw[i] if inputUvw else NULLVECTOR,
-            inputs._direction[i] if inputDirection else NULLVECTOR
-            )
+        # First pass on even points to calculate values
+        if 'SampleValue' in globals():
+            
+            for i in range(0, inputs._blockCount):
+                valueList[i] = SampleValue(op,
+                inputs._transform,
+                i + inputs._blockOffset, #index
+                inputs._fullArraySize - 1, #lastIndex
+                )
 
     # Write the values in the FieldOutput
     outputs._value = valueList
