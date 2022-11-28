@@ -17,13 +17,17 @@ from c4d.modules import mograph as mo
 # VALUE (float)
 def SampleValue(op, transform, index, lastIndex):
 
-    speed = 1 # Grow Speed (Unit : 1 / Second)
+    speed = 1 # Grow Speed (Unit : 1 / Second), single part motion will faster
     gap = 1 # The time to iteration all index ( Unit : Second )
     fps = 24 
-    frame_start = 100 / fps
+    frame_start = 100 / fps # what frame to start
     
-    # value = time - gap 
-    value = ( (time - frame_start) * speed ) - ( float(index) / lastIndex ) * gap 
+    """ 
+    value = time - gap * (index/count)
+    """
+    #Must dedect the direction
+    value = ( (time - frame_start) * speed ) - gap * ( float(index) / lastIndex )
+    #value = gap * ( float(index) / lastIndex ) - ( (time - frame_start) * speed )
 
     return value
 
