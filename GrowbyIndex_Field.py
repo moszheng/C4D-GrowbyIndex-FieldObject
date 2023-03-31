@@ -2,6 +2,7 @@
 Grow by Index - Python Field
 Author : Sheng Wen Cheng
 """
+
 import c4d
 import math
 from c4d.modules import mograph as mo
@@ -18,16 +19,18 @@ from c4d.modules import mograph as mo
 def SampleValue(op, transform, index, lastIndex):
 
     speed = 1 # Grow Speed (Unit : 1 / Second), single part motion will faster
-    gap = 1 # The time to iteration all index ( Unit : Second )
-    fps = 24 
-    frame_start = 100 / fps # what frame to start
+    gap = 0.1 # ( Unit : Second )
+    fps = 30 #doc.GetTime().GetFrame(doc.GetFps())
+    frame_start = 0 / fps # what frame to start
     
     """ 
     value = time - gap * (index/count)
     """
-    #Must dedect the direction
-    value = ( (time - frame_start) * speed ) - gap * ( float(index) / lastIndex )
-    #value = gap * ( float(index) / lastIndex ) - ( (time - frame_start) * speed )
+    #v1
+    #value = ( (time - frame_start) * speed ) - gap * ( float(index) / lastIndex )
+    
+    #v2 Gap is true gap
+    value = ( (time - frame_start) * speed ) - gap * float(index)
 
     return value
 
