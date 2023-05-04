@@ -1,5 +1,7 @@
 # C4D_GrowbyIndex_Field
 
+A Field Object to make Mograph grow by Index
+
 ### How to Use
 1. Create Cloner Object -> [Transform] -> [Animation Mode] -> [Fixed]
 1. Add Plain effect -> [Parameter] -> Time Offset = your animation duration
@@ -11,6 +13,11 @@
 1. Gap, The Gap time between two iteration. ( Unit : Second )
 1. Start Frame, When does the first item start.
 
+---
+
+# C4D Field
+
+讓 mograph 依照 Index 生長的 Field Object，可自由決定速度和時間。
 
 ### 使用方法
 1. 創建 Cloner Object -> [Transform] -> [Animation Mode] -> [Fixed]

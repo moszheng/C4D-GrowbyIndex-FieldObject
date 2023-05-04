@@ -12,10 +12,10 @@ from c4d.modules import mograph as mo
 # VALUE (float)
 def SampleValue(op, transform, index, lastIndex):
 
-    speed = 1 # Grow Speed (Unit : 1 / Second), single part motion will faster
-    gap = 0.1 # ( Unit : Second )
+    speed = op[c4d.ID_USERDATA,1] # Grow Speed (Unit : 1 / Second), single part motion will faster
+    gap = op[c4d.ID_USERDATA,2] # ( Unit : Second )
     fps = doc.GetFps()
-    frame_start = 0 / fps # what frame to start
+    frame_start = op[c4d.ID_USERDATA,3] / fps # what frame to start
     
     """ 
     value = time - gap * (index/count)
