@@ -5,6 +5,7 @@ Author : Sheng Wen Cheng
 
 import c4d
 import math
+import random
 from c4d.modules import mograph as mo
 
 #-------------------------------------------------------------------------------------------------------------
@@ -12,19 +13,13 @@ from c4d.modules import mograph as mo
 # VALUE (float)
 def SampleValue(op, transform, index, lastIndex):
 
-    speed = 1 # Grow Speed (Unit : 1 / Second), single part motion will faster
-    gap = 0.1 # ( Unit : Second )
+    speed = 1.5       # Grow Speed (Unit : 1 / Second)
+    random_val = (math.sin(index * 12.9898) * 43758.5453) % 1.0
+    delay = 0.15 + (random_val * 0.1)  # ( Unit : Second )
+    startFrame = 0
+
     fps = doc.GetFps()
-    frame_start = 0 / fps # what frame to start
-    
-    """ 
-    value = time - gap * (index/count)
-    """
-    #v1
-    #value = ( (time - frame_start) * speed ) - gap * ( float(index) / lastIndex )
-    
-    #v2 Gap is true gap
-    value = ( (time - frame_start) * speed ) - gap * float(index)
+    value = ( (time - startFrame / fps) * speed ) - delay * float(index)
 
     return value
 
@@ -55,18 +50,15 @@ def InitSampling(op, info):
     return True
 
 def FreeSampling(op, info):
-    
     return True
 
 def Sample(op, inputs, outputs, info):
-    
     valueList = outputs._value
 
     if inputs._fullArraySize != 1 : #debug
 
         # First pass on even points to calculate values
         if 'SampleValue' in globals():
-            
             for i in range(0, inputs._blockCount):
                 valueList[i] = SampleValue(op,
                 inputs._transform,
